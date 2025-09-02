@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeAnalyst - Advanced Code Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Vertical Navbar -->
+        <nav class="navbar">
+            <div class="logo">
+                <span>Code<span class="highlight">Analyst</span></span>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard & Analysis</span>
+                </li>
+                <li class="nav-item" data-section="security-scan">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Security Scan</span>
+                </li>
+               
+                <li class="nav-item" data-section="scalability">
+                    <i class="fas fa-server"></i>
+                    <span>Scalability</span>
+                </li>
+                <li class="nav-item" data-section="recommendations">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Recommendations</span>
+                </li>
+                <li class="nav-item" data-section="ai-insights">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Insights</span>
+                </li>
+                <li class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </li>
+            </ul>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+                <span>Dark Mode</span>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard & Analysis Section -->
+            <section id="dashboard" class="section active">
+                <h1>Dashboard & Analysis</h1>
+                
+                <!-- Code Input Section - Shown First -->
+                <div class="input-container">
+                    <h2>Start Your Analysis</h2>
+                    <p class="intro-text">Input your code to see detailed analysis and dashboard statistics</p>
+                    <div class="tabs">
+                        <div class="tab active" data-tab="url-input">URL</div>
+                        <div class="tab" data-tab="file-input">File Upload</div>
+                        <div class="tab" data-tab="code-input">Direct Code</div>
+                    </div>
+                    <div class="tab-content active" id="url-input">
+                        <form id="url-form">
+                            <div class="form-group">
+                                <label for="url">Enter Website URL</label>
+                                <input type="url" id="url" placeholder="https://example.com" required>
+                            </div>
+                            <button type="submit" class="btn-analyze">Analyze</button>
+                        </form>
+                    </div>
+                    <div class="tab-content" id="file-input">
+                        <form id="file-form">
+                            <div class="form-group">
+                                <label for="file">Upload Code File</label>
+                                <div class="file-upload">
+                                    <input type="file" id="file" accept=".html,.css,.js,.php,.py,.java,.rb,.go,.ts,.jsx,.tsx" required>
+                                    <label for="file" class="file-label">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <span>Choose a file or drag it here</span>
+                                    </label>
+                                </div>
+                                <div class="file-info"></div>
+                            </div>
+                            <button type="submit" class="btn-analyze">Analyze</button>
+                        </form>
+                    </div>
+                    <div class="tab-content" id="code-input">
+                        <form id="code-form">
+                            <div class="form-group">
+                                <label for="language">Select Language</label>
+                                <select id="language" required>
+                                    <option value="">Select a language</option>
+                                    <option value="html">HTML</option>
+                                    <option value="css">CSS</option>
+                                    <option value="javascript">JavaScript</option>
+                                    <option value="php">PHP</option>
+                                    <option value="python">Python</option>
+                                    <option value="java">Java</option>
+                                    <option value="ruby">Ruby</option>
+                                    <option value="go">Go</option>
+                                    <option value="typescript">TypeScript</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="code">Paste Your Code</label>
+                                <textarea id="code" rows="10" placeholder="Paste your code here..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn-analyze">Analyze</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Results Section - Hidden until analysis is complete -->
+                <div class="analysis-results">
+                    <div class="loader hidden"></div>
+                    <div class="results-container hidden">
+                        <!-- Dashboard Cards -->
+                        <div class="dashboard-cards">
+                            <div class="card">
+                                <div class="card-icon"><i class="fas fa-bug"></i></div>
+                                <div class="card-content">
+                                    <h3>Issues Found</h3>
+                                    <p class="counter">0</p>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                                <div class="card-content">
+                                    <h3>Security Score</h3>
+                                    <p class="counter">0%</p>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                <div class="card-content">
+                                    <h3>Performance</h3>
+                                    <p class="counter">0%</p>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-icon"><i class="fas fa-server"></i></div>
+                                <div class="card-content">
+                                    <h3>Scalability</h3>
+                                    <p class="counter">0%</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dashboard Charts and Tabs -->
+                        <div class="results-tabs">
+                            <div class="results-tab active" data-result="overview">Overview</div>
+                            <div class="results-tab" data-result="issues">Issues</div>
+                            <div class="results-tab" data-result="security">Security</div>
+                            <div class="results-tab" data-result="performance">Performance</div>
+                            <div class="results-tab" id="recentActivityTab" data-result="activity">Recent Activity</div>
+                        </div>
+                        
+                        <!-- Overview Tab Content -->
+                        <div class="results-content active" id="overview">
+                            <div class="dashboard-charts">
+                                <div class="chart-container">
+                                    <h3>Issue Distribution</h3>
+                                    <canvas id="issueChart"></canvas>
+                                </div>
+                                <div class="chart-container">
+                                    <h3>Security Analysis</h3>
+                                    <canvas id="securityChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="overview-stats">
+                                <div class="stat">
+                                    <h3>Code Quality</h3>
+                                    <div class="progress-circle" data-value="0">
+                                        <span class="progress-text">0%</span>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <h3>Security</h3>
+                                    <div class="progress-circle" data-value="0">
+                                        <span class="progress-text">0%</span>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <h3>Performance</h3>
+                                    <div class="progress-circle" data-value="0">
+                                        <span class="progress-text">0%</span>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <h3>Scalability</h3>
+                                    <div class="progress-circle" data-value="0">
+                                        <span class="progress-text">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overview-summary">
+                                <h3>Summary</h3>
+                                <p>No analysis has been performed yet.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Issues Tab Content -->
+                        <div class="results-content" id="issues">
+                            <div class="issues-list">
+                                <p>No issues found.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Security Tab Content -->
+                        <div class="results-content" id="security">
+                            <div class="security-vulnerabilities">
+                                <h3>Vulnerabilities</h3>
+                                <div class="vulnerabilities-list">
+                                    <p>No vulnerabilities found.</p>
+                                </div>
+                            </div>
+                            <div class="security-recommendations">
+                                <h3>Security Recommendations</h3>
+                                <div class="recommendations-list">
+                                    <p>No recommendations available.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Performance Tab Content -->
+                        <div class="results-content" id="performance">
+                            <div class="performance-chart-container">
+                                <h3>Performance Metrics</h3>
+                                <canvas id="performanceChart"></canvas>
+                            </div>
+                            <div class="performance-metrics">
+                                <h3>Performance Details</h3>
+                                <div class="metrics-list">
+                                    <p>No performance metrics available.</p>
+                                </div>
+                            </div>
+                            <div class="performance-recommendations">
+                                <h3>Performance Recommendations</h3>
+                                <div class="recommendations-list">
+                                    <p>No recommendations available.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Activity Tab Content -->
+                        <div class="results-content" id="activity">
+                            <div class="recent-activity">
+                                <h3>Recent Activity</h3>
+                                <div class="activity-list">
+                                    <p>No recent activity</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Scan Section -->
+            <section id="security-scan" class="section">
+                <h1>Security Scan</h1>
+                
+                <!-- Manual Scan Input Section -->
+                <div class="manual-scan-container">
+                    <h2>Comprehensive Security Scan</h2>
+                    <p class="intro-text">Scan your website, specific files, or code snippets for security vulnerabilities</p>
+                    <div class="scan-options">
+                        <div class="scan-option-group">
+                            <h3>Scan Type</h3>
+                            <div class="tabs">
+                                <div class="tab active" data-tab="website-scan">Full Website</div>
+                                <div class="tab" data-tab="file-scan">Targeted File</div>
+                                <div class="tab" data-tab="code-scan">Manual Code Input</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content active" id="website-scan">
+                        <form id="website-scan-form">
+                            <div class="form-group">
+                                <label for="website-url">Enter Website URL</label>
+                                <input type="url" id="website-url" placeholder="https://example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="scan-depth">Scan Depth</label>
+                                <select id="scan-depth" required>
+                                    <option value="basic">Basic</option>
+                                    <option value="standard" selected>Standard</option>
+                                    <option value="deep">Deep</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Scan Options</label>
+                                <div class="scan-options-checkboxes">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="website-vuln-scan" checked>
+                                        <label for="website-vuln-scan">Vulnerability Scan</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="website-config-scan" checked>
+                                        <label for="website-config-scan">Configuration Analysis</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="website-header-scan" checked>
+                                        <label for="website-header-scan">Header Security</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="website-ssl-scan" checked>
+                                        <label for="website-ssl-scan">SSL/TLS Analysis</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-scan">Start Security Scan</button>
+                        </form>
+                    </div>
+                    <div class="tab-content" id="file-scan">
+                        <form id="file-scan-form">
+                            <div class="form-group">
+                                <label for="security-file">Upload File for Security Scan</label>
+                                <div class="file-upload">
+                                    <input type="file" id="security-file" accept=".html,.css,.js,.php,.py,.java,.rb,.go,.ts,.jsx,.tsx" required>
+                                    <label for="security-file" class="file-label">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>Choose a file or drag it here</span>
+                                    </label>
+                                </div>
+                                <div class="file-info"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="file-scan-depth">Scan Depth</label>
+                                <select id="file-scan-depth" required>
+                                    <option value="basic">Basic</option>
+                                    <option value="standard" selected>Standard</option>
+                                    <option value="deep">Deep</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Scan Options</label>
+                                <div class="scan-options-checkboxes">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="file-vuln-scan" checked>
+                                        <label for="file-vuln-scan">Vulnerability Scan</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="file-code-quality" checked>
+                                        <label for="file-code-quality">Code Quality</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="file-dependency-scan" checked>
+                                        <label for="file-dependency-scan">Dependency Analysis</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="file-secrets-scan" checked>
+                                        <label for="file-secrets-scan">Secrets Detection</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-scan">Start Security Scan</button>
+                        </form>
+                    </div>
+                    <div class="tab-content" id="code-scan">
+                        <form id="code-scan-form">
+                            <div class="form-group">
+                                <label for="security-language">Select Language</label>
+                                <select id="security-language" required>
+                                    <option value="">Select a language</option>
+                                    <option value="html">HTML</option>
+                                    <option value="css">CSS</option>
+                                    <option value="javascript">JavaScript</option>
+                                    <option value="php">PHP</option>
+                                    <option value="python">Python</option>
+                                    <option value="java">Java</option>
+                                    <option value="ruby">Ruby</option>
+                                    <option value="go">Go</option>
+                                    <option value="typescript">TypeScript</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="security-code">Paste Your Code</label>
+                                <textarea id="security-code" rows="10" placeholder="Paste your code here for security analysis..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="code-scan-depth">Scan Depth</label>
+                                <select id="code-scan-depth" required>
+                                    <option value="basic">Basic</option>
+                                    <option value="standard" selected>Standard</option>
+                                    <option value="deep">Deep</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Scan Options</label>
+                                <div class="scan-options-checkboxes">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="code-vuln-scan" checked>
+                                        <label for="code-vuln-scan">Vulnerability Scan</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="code-best-practices" checked>
+                                        <label for="code-best-practices">Best Practices</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="code-logic-scan" checked>
+                                        <label for="code-logic-scan">Logic Analysis</label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="code-pattern-scan" checked>
+                                        <label for="code-pattern-scan">Pattern Detection</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-scan">Start Security Scan</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="security-results-container">
+                    <div class="loader security-loader hidden"></div>
+                    
+                    <div class="security-dashboard">
+                        <div class="security-overview">
+                            <h2>Security Overview</h2>
+                            <div class="security-score">
+                                <div class="score-circle" data-value="0">
+                                    <span class="score-text">0%</span>
+                                </div>
+                                <p>Overall Security Score</p>
+                            </div>
+                            <div class="security-stats">
+                                <div class="stat critical">
+                                    <h3>Critical</h3>
+                                    <p class="count">0</p>
+                                    <div class="severity-indicator critical"></div>
+                                </div>
+                                <div class="stat high">
+                                    <h3>High</h3>
+                                    <p class="count">0</p>
+                                    <div class="severity-indicator high"></div>
+                                </div>
+                                <div class="stat medium">
+                                    <h3>Medium</h3>
+                                    <p class="count">0</p>
+                                    <div class="severity-indicator medium"></div>
+                                </div>
+                                <div class="stat low">
+                                    <h3>Low</h3>
+                                    <p class="count">0</p>
+                                    <div class="severity-indicator low"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="security-details">
+                            <h2>Vulnerability Details</h2>
+                            <div class="security-tabs">
+                                <div class="security-tab active" data-tab="all-vulnerabilities">All Vulnerabilities</div>
+                                <div class="security-tab" data-tab="by-category">By Category</div>
+                                <div class="security-tab" data-tab="by-component">By Component</div>
+                            </div>
+                            
+                            <div class="security-tab-content active" id="all-vulnerabilities">
+                                <div class="vulnerability-list">
+                                    <div class="vulnerability-card empty-state">
+                                        <p>No vulnerabilities found. Start a scan to detect security issues.</p>
+                                    </div>
+                                    <!-- Vulnerability cards will be dynamically added here -->
+                                </div>
+                            </div>
+                            
+                            <div class="security-tab-content" id="by-category">
+                                <div class="security-categories">
+                                    <div class="category">
+                                        <h3>API Security</h3>
+                                        <div class="category-score" data-value="0">0%</div>
+                                        <div class="category-issues-container">
+                                            <p class="empty-state">No API security issues found</p>
+                                            <!-- API security issues will be dynamically added here -->
+                                        </div>
+                                    </div>
+                                    <div class="category">
+                                        <h3>Cloud Security</h3>
+                                        <div class="category-score" data-value="0">0%</div>
+                                        <div class="category-issues-container">
+                                            <p class="empty-state">No cloud security issues found</p>
+                                            <!-- Cloud security issues will be dynamically added here -->
+                                        </div>
+                                    </div>
+                                    <div class="category">
+                                        <h3>Authentication</h3>
+                                        <div class="category-score" data-value="0">0%</div>
+                                        <div class="category-issues-container">
+                                            <p class="empty-state">No authentication issues found</p>
+                                            <!-- Authentication issues will be dynamically added here -->
+                                        </div>
+                                    </div>
+                                    <div class="category">
+                                        <h3>Data Protection</h3>
+                                        <div class="category-score" data-value="0">0%</div>
+                                        <div class="category-issues-container">
+                                            <p class="empty-state">No data protection issues found</p>
+                                            <!-- Data protection issues will be dynamically added here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="security-tab-content" id="by-component">
+                                <div class="component-vulnerabilities">
+                                    <p class="empty-state">No component vulnerabilities found</p>
+                                    <!-- Component vulnerabilities will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="vulnerability-details-container hidden">
+                        <div class="vulnerability-details-header">
+                            <button class="btn-back"><i class="fas fa-arrow-left"></i> Back to Results</button>
+                            <h2>Vulnerability Details</h2>
+                        </div>
+                        <div class="vulnerability-details-content">
+                            <!-- Vulnerability details will be dynamically added here -->
+                        </div>
+                    </div>
+                    
+                    <div class="security-recommendations">
+                        <h2>Remediation Recommendations</h2>
+                        <div class="recommendations-list">
+                            <p class="empty-state">No security recommendations available.</p>
+                            <!-- Recommendations will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Performance Section -->
+            <section id="performance" class="section">
+                <h1>Performance Analysis</h1>
+                <div class="performance-overview">
+                    <div class="performance-score">
+                        <div class="score-circle" data-value="0">
+                            <span class="score-text">0%</span>
+                        </div>
+                        <p>Overall Performance Score</p>
+                    </div>
+                    <div class="performance-metrics">
+                        <div class="metric">
+                            <h3>Load Time</h3>
+                            <p class="value">0ms</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Resource Usage</h3>
+                            <p class="value">0%</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Response Time</h3>
+                            <p class="value">0ms</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Optimization</h3>
+                            <p class="value">0%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="performance-details">
+                    <h2>Performance Details</h2>
+                    <div class="performance-chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    <div class="performance-issues">
+                        <h3>Performance Issues</h3>
+                        <div class="issues-list">
+                            <p>No performance issues found.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="performance-recommendations">
+                    <h2>Performance Recommendations</h2>
+                    <div class="recommendations-list">
+                        <p>No performance recommendations available.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Scalability Section -->
+            <section id="scalability" class="section">
+                <h1>Scalability Assessment</h1>
+                <div class="scalability-overview">
+                    <div class="scalability-score">
+                        <div class="score-circle" data-value="0">
+                            <span class="score-text">0%</span>
+                        </div>
+                        <p>Overall Scalability Score</p>
+                    </div>
+                    <div class="scalability-metrics">
+                        <div class="metric">
+                            <h3>Horizontal Scaling</h3>
+                            <p class="value">0%</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Vertical Scaling</h3>
+                            <p class="value">0%</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Database Scaling</h3>
+                            <p class="value">0%</p>
+                        </div>
+                        <div class="metric">
+                            <h3>Load Balancing</h3>
+                            <p class="value">0%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="scalability-details">
+                    <h2>Scalability Details</h2>
+                    <div class="scalability-chart-container">
+                        <canvas id="scalabilityChart"></canvas>
+                    </div>
+                    <div class="scalability-issues">
+                        <h3>Scalability Issues</h3>
+                        <div class="issues-list">
+                            <p>No scalability issues found.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="scalability-recommendations">
+                    <h2>Scalability Recommendations</h2>
+                    <div class="recommendations-list">
+                        <p>No scalability recommendations available.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recommendations Section -->
+            <section id="recommendations" class="section">
+                <h1>Recommendations</h1>
+                <div class="recommendations-container">
+                    <div class="recommendation-category">
+                        <h2>Security Recommendations</h2>
+                        <div class="recommendations-list">
+                            <p>No security recommendations available.</p>
+                        </div>
+                    </div>
+                    <div class="recommendation-category">
+                        <h2>Performance Recommendations</h2>
+                        <div class="recommendations-list">
+                            <p>No performance recommendations available.</p>
+                        </div>
+                    </div>
+                    <div class="recommendation-category">
+                        <h2>Scalability Recommendations</h2>
+                        <div class="recommendations-list">
+                            <p>No scalability recommendations available.</p>
+                        </div>
+                    </div>
+                    <div class="recommendation-category">
+                        <h2>Best Practices</h2>
+                        <div class="recommendations-list">
+                            <p>No best practices recommendations available.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Insights Section -->
+            <section id="ai-insights" class="section">
+                <h1>AI Insights</h1>
+                <div class="ai-container">
+                    <div class="ai-input">
+                        <h2>Ask AI Assistant</h2>
+                        <div class="ai-form">
+                            <textarea id="ai-question" placeholder="Ask a question about your code or get recommendations..."></textarea>
+                            <button id="ai-submit" class="btn-primary">Ask AI</button>
+                        </div>
+                    </div>
+                    <div class="ai-response">
+                        <h2>AI Response</h2>
+                        <div class="response-container">
+                            <div class="loader hidden"></div>
+                            <div class="response-content">
+                                <p>Ask a question to get AI-powered insights about your code.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-history">
+                    <h2>Conversation History</h2>
+                    <div class="history-container">
+                        <p>No conversation history yet.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Popup for Security Fixes -->
+            <div id="ai-security-popup" class="ai-security-popup">
+                <div class="ai-popup-header">
+                    <h3><i class="fas fa-robot"></i> AI Security Assistant</h3>
+                    <button class="close-ai-popup"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="ai-popup-content">
+                    <div class="ai-popup-section">
+                        <h4>Security Issue Detected</h4>
+                        <div class="security-issue-details">
+                            <p>No security issues detected yet. Run a security scan to identify vulnerabilities.</p>
+                        </div>
+                    </div>
+                    <div class="ai-popup-section">
+                        <h4>AI Recommendation</h4>
+                        <div class="ai-recommendation-details">
+                            <p>AI recommendations will appear here after scanning.</p>
+                        </div>
+                    </div>
+                    <div class="ai-popup-section">
+                        <h4>Code Fix Suggestion</h4>
+                        <div class="code-fix-container">
+                            <pre><code class="code-suggestion">// Code fix suggestions will appear here</code></pre>
+                            <button class="btn-apply-fix">Apply Fix</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <section id="settings" class="section">
+                <h1>Settings</h1>
+                <div class="settings-container">
+                    <div class="settings-group">
+                        <h2>Appearance</h2>
+                        <div class="setting">
+                            <label for="theme-select">Theme</label>
+                            <select id="theme-select">
+                                <option value="dark">Dark</option>
+                                <option value="light">Light</option>
+                                <option value="system">System Default</option>
+                            </select>
+                        </div>
+                        <div class="setting">
+                            <label for="accent-color">Accent Color</label>
+                            <select id="accent-color">
+                                <option value="blue">Blue</option>
+                                <option value="red">Red</option>
+                                <option value="green">Green</option>
+                                <option value="purple">Purple</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h2>Analysis Settings</h2>
+                        <div class="setting">
+                            <label for="analysis-depth">Analysis Depth</label>
+                            <select id="analysis-depth">
+                                <option value="basic">Basic</option>
+                                <option value="standard" selected>Standard</option>
+                                <option value="deep">Deep</option>
+                            </select>
+                        </div>
+                        <div class="setting">
+                            <label for="ai-model">AI Model</label>
+                            <select id="ai-model">
+                                <option value="standard" selected>Standard</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="settings-group">
+                        <h2>API Keys</h2>
+                        <div class="setting">
+                            <label for="perplexity-api-key">Perplexity API Key</label>
+                            <input type="password" id="perplexity-api-key" placeholder="Enter your Perplexity API key">
+                        </div>
+                        <button id="save-api-keys" class="btn-primary">Save API Keys</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- AI Security Assistant Sidebar -->
+    <div id="ai-security-assistant" class="ai-security-sidebar">
+        <div class="ai-sidebar-toggle">
+            <button class="toggle-ai-sidebar" title="Toggle AI Assistant">
+                <i class="fas fa-robot"></i>
+            </button>
+        </div>
+        <div class="ai-sidebar-content">
+            <div class="ai-sidebar-header">
+                <h2><i class="fas fa-shield-alt"></i> AI Security Assistant</h2>
+                <button class="minimize-ai-sidebar"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="ai-sidebar-body">
+                <div class="ai-status-indicator">
+                    <div class="ai-status active">
+                        <span class="status-dot"></span>
+                        <span class="status-text">AI Assistant Active</span>
+                    </div>
+                </div>
+                
+                <div class="ai-sidebar-section vulnerability-section">
+                    <h3>Detected Vulnerabilities</h3>
+                    <div class="vulnerability-summary empty">
+                        <p class="empty-message">No vulnerabilities detected yet. Run a security scan to identify issues.</p>
+                        <!-- Vulnerability summary will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <div class="ai-sidebar-section code-correction-section">
+                    <h3>Code Correction</h3>
+                    <div class="code-correction-container empty">
+                        <p class="empty-message">Select a vulnerability to see suggested fixes.</p>
+                        <!-- Code correction will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <div class="ai-sidebar-section resolution-section">
+                    <h3>Resolution Pathways</h3>
+                    <div class="resolution-pathways empty">
+                        <p class="empty-message">Multiple resolution options will appear here when vulnerabilities are detected.</p>
+                        <!-- Resolution pathways will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <div class="ai-sidebar-section resources-section">
+                    <h3>Security Resources</h3>
+                    <div class="security-resources">
+                        <ul class="resource-links">
+                            <li><a href="#" class="resource-link"><i class="fas fa-book"></i> OWASP Top 10</a></li>
+                            <li><a href="#" class="resource-link"><i class="fas fa-shield-alt"></i> CWE Database</a></li>
+                            <li><a href="#" class="resource-link"><i class="fas fa-code"></i> Secure Coding Practices</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-sidebar-footer">
+                <div class="ai-actions">
+                    <button class="btn-apply-all-fixes">Apply All Fixes</button>
+                    <button class="btn-customize-fixes">Customize Fixes</button>
+                </div>
+                <div class="ai-chat-prompt">
+                    <input type="text" placeholder="Ask AI about security issues..." class="ai-chat-input">
+                    <button class="ai-chat-send"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vulnerability Detail View (initially hidden) -->
+        <div class="vulnerability-detail-view hidden">
+            <div class="detail-view-header">
+                <button class="btn-back-to-summary"><i class="fas fa-arrow-left"></i></button>
+                <h3>Vulnerability Details</h3>
+            </div>
+            <div class="detail-view-content">
+                <!-- Vulnerability details will be dynamically added here -->
+            </div>
+            <div class="code-highlight-container">
+                <h4>Vulnerable Code</h4>
+                <div class="code-highlight">
+                    <pre><code class="highlighted-code">// Vulnerable code will be displayed here with highlighting</code></pre>
+                </div>
+            </div>
+            <div class="fix-options">
+                <h4>Fix Options</h4>
+                <div class="fix-option-list">
+                    <!-- Fix options will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Legacy AI Analysis Popup (keeping for backward compatibility) -->
+    <div id="ai-analysis-popup" class="ai-popup">
+        <div class="ai-popup-content">
+            <div class="ai-popup-header">
+                <h2>AI Code Analysis</h2>
+                <button class="close-popup"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="ai-popup-body">
+                <div class="ai-popup-section">
+                    <h3>Issues</h3>
+                    <div class="issues-container"></div>
+                </div>
+                <div class="ai-popup-section">
+                    <h3>Recommendations</h3>
+                    <div class="recommendations-container"></div>
+                </div>
+                <div class="ai-popup-section">
+                    <h3>Resources</h3>
+                    <div class="resources-container"></div>
+                </div>
+            </div>
+            <div class="ai-popup-footer">
+                <button class="apply-recommendations btn-primary">Apply Recommendations</button>
+                <button class="save-analysis">Save Analysis</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="ai-service.js"></script>
+    <script src="ai-popup.js"></script>
+    <script src="ai-security-assistant.js"></script>
+    <script src="security-service.js"></script>
+    <script src="upload.js"></script>
+    <script src="responsive.js"></script>
+
+</body>
+
+</html>
